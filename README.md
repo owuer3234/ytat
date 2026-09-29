@@ -46,7 +46,26 @@ You need Python 3.9 or newer.
 
    You should see something like `Python 3.12.x`.
 
-> **Note:** On Mac you type `python3` and `pip3`. On Windows you type
+### Linux (Ubuntu)
+
+Ubuntu already comes with Python 3. You just need to add the tools for
+installing libraries. Open **Terminal** (press `Ctrl + Alt + T`) and run:
+
+```
+sudo apt update
+sudo apt install python3 python3-pip python3-venv
+```
+
+It will ask for your password (nothing appears on screen while you type it,
+that's normal). Then check it worked:
+
+```
+python3 --version
+```
+
+You should see something like `Python 3.12.x`.
+
+> **Note:** On Mac and Linux you type `python3` and `pip3`. On Windows you type
 > `python` and `pip`. The examples below show both.
 
 ---
@@ -83,6 +102,16 @@ folder from Finder into the Terminal window, and press Enter. Or, for example:
 cd ~/Desktop/ytat
 ```
 
+### Linux (Ubuntu)
+
+Open the project folder in the Files app, right-click on an empty space
+inside it and choose **Open in Terminal**. Or type `cd` followed by the
+folder path, for example:
+
+```
+cd ~/Desktop/ytat
+```
+
 ---
 
 ## Step 4: Install the dependencies
@@ -102,8 +131,23 @@ python -m pip install -r requirements.txt
 python3 -m pip install -r requirements.txt
 ```
 
+**Linux (Ubuntu):** on Ubuntu you **must** use a virtual environment (a
+private space for this project's libraries). Newer Ubuntu versions refuse
+a plain `pip install` with an "externally-managed-environment" error.
+Run these three lines:
+
+```
+python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -r requirements.txt
+```
+
+You'll see `(.venv)` at the start of the line when it's active.
+**Every time you open a new terminal**, go to the project folder and run
+`source .venv/bin/activate` again before using the tool.
+
 <details>
-<summary>Optional: use a virtual environment (keeps things tidy)</summary>
+<summary>Optional for Windows and Mac: use a virtual environment (keeps things tidy)</summary>
 
 A virtual environment keeps this project's libraries separate from the rest
 of your computer. It is optional, but recommended.
@@ -141,14 +185,14 @@ You'll see `(.venv)` at the start of the line when it's active. Run the
 python yt_to_pdf.py https://www.youtube.com/watch?v=jNQXAC9IVRw
 ```
 
-**Mac:**
+**Mac / Linux:**
 
 ```
 python3 yt_to_pdf.py "https://www.youtube.com/watch?v=jNQXAC9IVRw"
 ```
 
-> **Tip:** On Mac, put links in quotes `"..."`. Some links contain `?` or `&`,
-> which the Mac terminal treats specially otherwise. Quotes work on Windows
+> **Tip:** On Mac and Linux, put links in quotes `"..."`. Some links contain `?` or `&`,
+> which the terminal treats specially otherwise. Quotes work on Windows
 > too.
 
 ### Several videos at once
@@ -161,7 +205,7 @@ Just put the links one after another, separated by spaces:
 python yt_to_pdf.py "https://youtu.be/jNQXAC9IVRw" "https://www.youtube.com/shorts/VIDEO_ID"
 ```
 
-**Mac:**
+**Mac / Linux:**
 
 ```
 python3 yt_to_pdf.py "https://youtu.be/jNQXAC9IVRw" "https://www.youtube.com/shorts/VIDEO_ID"
@@ -187,7 +231,7 @@ Then run:
 python yt_to_pdf.py links.txt
 ```
 
-**Mac:**
+**Mac / Linux:**
 
 ```
 python3 yt_to_pdf.py links.txt
@@ -240,8 +284,10 @@ a friendly message and carries on with the rest of your links.
 | Problem | Fix |
 | --- | --- |
 | `'python' is not recognized` (Windows) | Python wasn't added to PATH. Re-run the installer, choose **Modify**, and tick **Add Python to environment variables**. Or try `py` instead of `python`. |
-| `command not found: python` (Mac) | Use `python3` instead of `python`. |
-| `No module named 'fpdf'` or `'youtube_transcript_api'` | You skipped Step 4, or you're in a different virtual environment. Run the install command again. |
+| `command not found: python` (Mac / Linux) | Use `python3` instead of `python`. |
+| `error: externally-managed-environment` (Linux) | Ubuntu wants you to use a virtual environment. Follow the **Linux (Ubuntu)** part of Step 4. |
+| `No module named venv` / `ensurepip is not available` (Linux) | Run `sudo apt install python3-venv`, then delete the `.venv` folder and try Step 4 again. |
+| `No module named 'fpdf'` or `'youtube_transcript_api'` | You skipped Step 4, or you forgot to activate your virtual environment (`source .venv/bin/activate` on Mac/Linux, `.venv\\Scripts\\activate` on Windows). Activate it, or run the install command again. |
 | `can't open file 'yt_to_pdf.py'` | Your terminal isn't in the project folder. Go back to Step 3. |
 | "Something went wrong ... blocked" / "IpBlocked" | YouTube sometimes blocks lots of requests in a row, or requests from cloud servers/VPNs. Wait a while and try again, or turn off your VPN. |
 | Some characters show as `?` in the PDF | The tool couldn't find a font on your computer that supports those characters, so it used a basic one. |
