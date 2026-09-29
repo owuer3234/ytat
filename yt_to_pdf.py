@@ -26,8 +26,9 @@ from youtube_transcript_api import (
 )
 
 
-# The folder where all the PDFs will be saved.
-OUTPUT_FOLDER = "output"
+# The folder where all the PDFs will be saved: a folder called "output"
+# right next to this file, no matter where you run the tool from.
+OUTPUT_FOLDER = os.path.join(os.path.dirname(os.path.abspath(__file__)), "output")
 
 # Roughly how many words go into one paragraph of the PDF.
 # Bigger number = longer paragraphs.
@@ -272,39 +273,43 @@ def save_pdf(title, link, paragraphs, pdf_path):
 # Putting it all together
 # ---------------------------------------------------------------------------
 
-def process_link(link):
+def process_link(link, log=print):
     """
     Do everything for one link. Returns True if a PDF was made.
     Any problem prints a friendly message instead of crashing.
+
+    "log" is the function used to show messages. Normally that's print(),
+    but the window app (yt_to_pdf_app.py) passes its own function so the
+    messages appear in the window instead.
     """
-    print(f"\nWorking on: {link}")
+    log(f"\nWorking on: {link}")
 
     video_id = get_video_id(link)
     if not video_id:
-        print("  Sorry, that doesn't look like a YouTube video link. Skipping it.")
+        log("  Sorry, that doesn't look like a YouTube video link. Skipping it.")
         return False
 
     try:
         pieces = get_transcript_text(video_id)
     except TranscriptsDisabled:
-        print("  Sorry, this video has no captions/transcript available. Skipping it.")
+        log("  Sorry, this video has no captions/transcript available. Skipping it.")
         return False
     except (NoTranscriptFound, StopIteration):
-        print("  Sorry, no transcript could be found for this video. Skipping it.")
+        log("  Sorry, no transcript could be found for this video. Skipping it.")
         return False
     except VideoUnavailable:
-        print("  Sorry, this video is unavailable (private, deleted or wrong link). Skipping it.")
+        log("  Sorry, this video is unavailable (private, deleted or wrong link). Skipping it.")
         return False
     except Exception as error:
         # Anything else (no internet, YouTube blocking requests, etc.)
-        print(f"  Sorry, something went wrong getting the transcript: {error}")
-        print("  Skipping this video.")
+        log(f"  Sorry, something went wrong getting the transcript: {error}")
+        log("  Skipping this video.")
         return False
 
     title = get_video_title(video_id)
     paragraphs = make_paragraphs(pieces)
     if not paragraphs:
-        print("  Sorry, the transcript for this video is empty. Skipping it.")
+        log("  Sorry, the transcript for this video is empty. Skipping it.")
         return False
 
     os.makedirs(OUTPUT_FOLDER, exist_ok=True)
@@ -314,10 +319,10 @@ def process_link(link):
     try:
         save_pdf(title, video_url, paragraphs, pdf_path)
     except Exception as error:
-        print(f"  Sorry, the PDF could not be created: {error}")
+        log(f"  Sorry, the PDF could not be created: {error}")
         return False
 
-    print(f"  Done! Saved: {pdf_path}")
+    log(f"  Done! Saved: {pdf_path}")
     return True
 
 
@@ -359,8 +364,8 @@ def main():
         if process_link(link):
             successes += 1
 
-    print(f"\nFinished: {successes} of {len(links)} PDF(s) created "
-          f"in the '{OUTPUT_FOLDER}' folder.")
+    print(f"\nFinished: {successes} of {len(links)} PDF(s) created.")
+    print(f"Your PDFs are in: {OUTPUT_FOLDER}")
 
 
 # This line means: only run main() when the file is run directly.

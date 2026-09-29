@@ -13,6 +13,42 @@ All PDFs are saved into a folder called **`output`**.
 
 ---
 
+## Easiest way (Ubuntu): the app
+
+If you'd rather not type terminal commands, there's a simple window app.
+You paste links, click **Make PDF**, and that's it.
+
+**One-time setup:** open a terminal inside the tool's folder (right-click an
+empty space in the folder → **Open in Terminal**) and run:
+
+```
+bash install_app.sh
+```
+
+It installs everything the tool needs and adds **YouTube Transcript to PDF**
+to your app menu. It may ask for your password.
+
+**Every time after that:**
+
+1. Press the **Super** (Windows) key, type `YouTube`, and click
+   **YouTube Transcript to PDF**.
+   (Tip: right-click it in the dock and choose **Pin to Dash** to keep it there.)
+2. Copy a YouTube link from your browser, then click **Paste link**.
+   You can paste several links, one per line.
+3. Click **Make PDF**.
+4. Click **Open PDF folder** to see your PDFs.
+
+Keep the tool's folder where it is, because the app runs from there. If you
+move it, just run `bash install_app.sh` again from its new place.
+
+On Windows or Mac you can open the app with
+`python yt_to_pdf_app.py` / `python3 yt_to_pdf_app.py` after doing Steps 1–4
+below.
+
+The rest of this guide covers the terminal version.
+
+---
+
 ## Step 1: Install Python
 
 You need Python 3.9 or newer.
@@ -241,7 +277,7 @@ You can even mix files and links: `python yt_to_pdf.py links.txt "https://youtu.
 
 ### Where are my PDFs?
 
-In the **`output`** folder inside the project folder. Each file is named after
+In the **`output`** folder inside the project folder (the tool also prints the full path when it finishes). Each file is named after
 the video title. If a file with that name already exists, a number is added
 (e.g. `My Video (2).pdf`) so nothing gets overwritten.
 
