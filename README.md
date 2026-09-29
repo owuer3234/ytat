@@ -287,7 +287,7 @@ a friendly message and carries on with the rest of your links.
 | `command not found: python` (Mac / Linux) | Use `python3` instead of `python`. |
 | `error: externally-managed-environment` (Linux) | Ubuntu wants you to use a virtual environment. Follow the **Linux (Ubuntu)** part of Step 4. |
 | `No module named venv` / `ensurepip is not available` (Linux) | Run `sudo apt install python3-venv`, then delete the `.venv` folder and try Step 4 again. |
-| `No module named 'fpdf'` or `'youtube_transcript_api'` | You skipped Step 4, or you forgot to activate your virtual environment (`source .venv/bin/activate` on Mac/Linux, `.venv\\Scripts\\activate` on Windows). Activate it, or run the install command again. |
+| `No module named 'fpdf'` or `'youtube_transcript_api'` | You skipped Step 4, or you forgot to activate your virtual environment (`source .venv/bin/activate` on Mac/Linux, `.venv\Scripts\activate` on Windows). Activate it, or run the install command again. |
 | `can't open file 'yt_to_pdf.py'` | Your terminal isn't in the project folder. Go back to Step 3. |
 | "Something went wrong ... blocked" / "IpBlocked" | YouTube sometimes blocks lots of requests in a row, or requests from cloud servers/VPNs. Wait a while and try again, or turn off your VPN. |
 | Some characters show as `?` in the PDF | The tool couldn't find a font on your computer that supports those characters, so it used a basic one. |
